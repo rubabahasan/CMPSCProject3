@@ -1,0 +1,4 @@
+xlogout_tr7       0
+rm_tr7       1
+login_tr7       2
+input1_tr7		3

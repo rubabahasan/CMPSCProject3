@@ -1,0 +1,10 @@
+xlogout_tr4       0       
+rm_tr4       4        
+login_tr4       10       
+input1_tr4 		12
+input2_tr4 		16	
+input3_tr4		18	
+input4_tr4 		25
+input5_tr4		27	
+input6_tr4		30
+input7_tr4		35

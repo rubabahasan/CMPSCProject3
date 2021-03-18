@@ -1,0 +1,5 @@
+xlogout_tr6       0
+rm_tr6       4
+login_tr6       6
+input1_tr6		8
+input2_tr6		20
