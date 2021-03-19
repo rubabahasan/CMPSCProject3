@@ -1,3 +1,4 @@
+Total-num-instr 9
 Mem 94a
 Mem 95a
 Mem 96a

@@ -1,3 +1,4 @@
+Total-num-instr 9
 Mem 10f
 Mem 77f46
 Mem 12b

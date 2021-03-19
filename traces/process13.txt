@@ -1,3 +1,4 @@
+Total-num-instr 7
 Mem 72f
 Mem 77f46
 NONMEM

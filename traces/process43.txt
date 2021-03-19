@@ -1,3 +1,4 @@
+Total-num-instr 100000
 NONMEM
 NONMEM
 NONMEM

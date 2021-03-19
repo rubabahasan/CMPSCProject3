@@ -1,2 +1,3 @@
+Total-num-instr 2
 Mem 12f
 Mem 77f46

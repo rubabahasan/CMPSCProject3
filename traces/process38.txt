@@ -1,3 +1,4 @@
+Total-num-instr 250000
 MEM 0x2964c3e5
 NONMEM
 NONMEM

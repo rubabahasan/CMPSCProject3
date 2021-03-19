@@ -1,3 +1,4 @@
+Total-num-instr 9
 Mem 94F
 Mem 95F
 NONMEM

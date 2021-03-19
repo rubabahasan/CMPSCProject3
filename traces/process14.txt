@@ -1,3 +1,4 @@
+Total-num-instr 11
 Mem 92f
 Mem 99f
 Mem 92f

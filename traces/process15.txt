@@ -1,3 +1,4 @@
+Total-num-instr 13
 Mem 7ffde
 Mem 83fda
 Mem 729da

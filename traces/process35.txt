@@ -1,3 +1,4 @@
+Total-num-instr 250000
 MEM 0xca7233e6
 NONMEM
 NONMEM

@@ -1,2 +1,3 @@
+Total-num-instr 2
 Mem 97f
 Mem 28d
