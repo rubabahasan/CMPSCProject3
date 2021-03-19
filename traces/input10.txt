@@ -11,13 +11,13 @@ Page-fault-trap-handling-time 10000
 Swap-interrupt-handling-time 10000
 TLB-replacement-policy LRU
 # list of parameters that may vary across experiments
-Frac-mem-inst 0.2
+Frac-mem-inst 0
 Num-pagetable-levels 3
 N1-in-bits 8
 N2-in-bits 8
 N3-in-bits 4
 Page-replacement-policy LRU
-Num-procs 4
+Num-procs 5
 # trace-file-name arrival-time-of-process
 process40 0
 process41 3
