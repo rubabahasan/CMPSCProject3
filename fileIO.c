@@ -58,9 +58,9 @@ int writeToFile(char* filename, struct TotalStats resultStats){
     }
     fprintf(fptr, "Context switched = %d\n", resultStats.numberOfContextSwitch);
 
-    fprintf(fptr, "Start time = %llu\nEnd time =%llu\n", resultStats.start_time, resultStats.end_time);
-    fprintf(fptr, "User time = %" PRIu64 "\nOS time = %" PRIu64 "\n", resultStats.userModeTime, resultStats.OSModetime);
-    fprintf(fptr, "Number of disk interrupt = %d \tNumber of page faults %d \tNumber of TLB miss %d \nBlocked state duration = %" PRIu64 "\n", resultStats.numberOfDiskInt, resultStats.totalPgFaults, resultStats.totalTLBmiss, resultStats.totalBlockedStateDuration);
+    fprintf(fptr, "Start time = %llu, \tEnd time =%llu\n", resultStats.start_time, resultStats.end_time);
+    fprintf(fptr, "User time = %" PRIu64 ", \tOS time = %" PRIu64 "\n", resultStats.userModeTime, resultStats.OSModetime);
+    fprintf(fptr, "Number of disk interrupt = %d, \tNumber of page faults %d, \tNumber of TLB miss %d, \nBlocked state duration = %" PRIu64 "\n", resultStats.numberOfDiskInt, resultStats.totalPgFaults, resultStats.totalTLBmiss, resultStats.totalBlockedStateDuration);
     
     fprintStats(resultStats.perProcessStats, fptr);
     
