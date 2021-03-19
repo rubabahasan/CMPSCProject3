@@ -1,3 +1,0 @@
-xlogout_tr2       0      
-rm_tr2       4        
-login_tr2       7       

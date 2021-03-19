@@ -1,4 +1,0 @@
-xlogout_tr8       0
-rm_tr8       3
-login_tr8       10
-input1_tr8		25

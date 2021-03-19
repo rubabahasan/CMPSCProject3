@@ -1,3 +1,0 @@
-xlogout_tr3       0       
-rm_tr3       10         
-login_tr3        15       

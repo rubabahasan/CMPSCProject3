@@ -1,5 +1,0 @@
-xlogout_tr10 0
-rm_tr10 3
-login_tr10 7
-input1_tr10 10
-input2_tr10 23      
