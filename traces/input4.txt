@@ -19,13 +19,13 @@ N3-in-bits 4
 Page-replacement-policy LRU
 Num-procs 4
 # trace-file-name arrival-time-of-process
-process10       0       
-process11       4        
-process12       10       
-process13 		12
-process14 		16	
-process15		18	
-process16 		25
-process17		27	
-process18		30
-process19		35
+process10 0       
+process11 4        
+process12 10       
+process13 12
+process14 16	
+process15 18	
+process16 25
+process17 27	
+process18 30
+process19 35
