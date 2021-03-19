@@ -19,7 +19,7 @@ FILE* openTrace(char* traceName){
         // Program exits if the file pointer returns NULL.
         exit(1);
     }
-    // printf("File opened\n");
+    // printf("File opened %s::\n", filename);
 
     return fptr;
 }
@@ -133,8 +133,8 @@ struct NextMem* readNextMem(FILE* fptr)
 
     if((read = getline(&line, &len, fptr)) != -1)
     {
-        printf("Retrieved line of length %zu:\n", read);
-        printf("%s::\n", line);
+        // printf("Retrieved line of length %zu:\n", read);
+        // printf("%s::\n", line);
         struct NextMem* lineRead = (struct NextMem*)malloc(sizeof(struct NextMem));
         line[strcspn(line, "\n")] = '\0'; //removes trailing newline characters, if any
 
@@ -170,7 +170,7 @@ int readNumIns(FILE* fptr)
     {
         token = strtok(line, " ");
         token = strtok(NULL, " ");
-        printf("Read %s::\n", token);
+        // printf("Read %s::\n", token);
         return atoi(token);
     }
     
