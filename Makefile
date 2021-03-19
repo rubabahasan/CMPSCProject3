@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-I.
-TARGET=simulator.out
+TARGET=simulator
 DEPS = simulator.h gll.h fileIO.h dataStructures.h
 
 %.o: %.c $(DEPS)
