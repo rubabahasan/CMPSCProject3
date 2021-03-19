@@ -43,7 +43,7 @@ void fprintStats(gll_t* list, FILE* f)
         double hitRatio = s->hitCount / (1.0* s->hitCount + 1.0 * s->missCount);
         fprintf(f, "\n\nProcess: %s: \nHit Ratio = %lf \tProcess completion time = %" PRIu64 
                 "\tuser time = %" PRIu64 "\tOS time = %" PRIu64 
-                "\nBlocked state duration = %" PRIu64 "\tNumber of page faults %d\t Number of TLB miss %d\n", 
+                "\nBlocked state duration = %" PRIu64 "\tNumber of page faults = %d\t Number of TLB miss = %d\n", 
                 s->processName, hitRatio, s->duration, s->user_time, s->OS_time, s->blockedStateDuration, s->numberOfPgFaults, s->numberOfTLBmiss) ;
         currNode = currNode->next;
     }

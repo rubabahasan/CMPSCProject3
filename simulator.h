@@ -26,17 +26,9 @@ uint64_t userTime = 0;
 
 int numberContextSwitch = 0;
 
-// uint64_t nonMemReadTime = 1;
 uint64_t contextSwitchTime = 1000;
 
-// uint64_t TLBaccessLatency = 1;
-// uint64_t DRAMaccessLatency = 100;
-// uint64_t diskAccessLatency = 1000000;
-
 uint64_t quantum = 10000;
-// int pgSize = 50;
-// int DRAMSize = 1000; 
-// int levelsPgTable = 1;
 
 /*Helper print functions*/
 void printPCB(struct PCB* p);
