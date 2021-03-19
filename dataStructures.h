@@ -15,6 +15,7 @@ struct PCB
     char* memoryFilename;
     FILE* memoryFile;
     gll_t* memReq;
+    int numOfIns;
     int hitCount;
     int missCount;
     uint64_t fracLeft;

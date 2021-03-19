@@ -133,24 +133,49 @@ struct NextMem* readNextMem(FILE* fptr)
 
     if((read = getline(&line, &len, fptr)) != -1)
     {
-        //printf("Retrieved line of length %zu:\n", read);
-        // printf("%s\n", line);
-	struct NextMem* lineRead = (struct NextMem*)malloc(sizeof(struct NextMem));
-	line[strcspn(line, "\n")] = '\0'; //removes trailing newline characters, if any
+        printf("Retrieved line of length %zu:\n", read);
+        printf("%s::\n", line);
+        struct NextMem* lineRead = (struct NextMem*)malloc(sizeof(struct NextMem));
+        line[strcspn(line, "\n")] = '\0'; //removes trailing newline characters, if any
 
-	if (strcmp(line, "NONMEM") == 0) {
-	    lineRead->type = "NONMEM";
-	    lineRead->address = NULL;
-	}
-	else {
-	    lineRead->type = "MEM";
-	    lineRead->address = (char*) malloc(sizeof(strlen(line)-4));
- 	    strcpy(lineRead->address, line+4);
- 	    // printf("Address returning: %s\n",lineRead->address);
-	}
-	return lineRead;
+        if (strcmp(line, "NONMEM") == 0) {
+            lineRead->type = "NONMEM";
+            lineRead->address = NULL;
+        }
+        else {
+            lineRead->type = "MEM";
+            lineRead->address = (char*) malloc(sizeof(strlen(line)-4));
+            strcpy(lineRead->address, line+4);
+            // printf("Address returning: %s\n",lineRead->address);
+        }
+        return lineRead;
     }
     return NULL;
+}
+
+int readNumIns(FILE* fptr)
+{
+    char* line = NULL;
+    ssize_t read;
+    size_t len = 0;
+    char *token;
+
+    if(fptr == NULL)
+    {
+        return -1;
+    }
+
+    read = getline(&line, &len, fptr);
+    if(read != -1)
+    {
+        token = strtok(line, " ");
+        token = strtok(NULL, " ");
+        printf("Read %s::\n", token);
+        return atoi(token);
+    }
+    
+    printf("Error reading system parameter from input file\n");
+    exit(1);
 }
 
 

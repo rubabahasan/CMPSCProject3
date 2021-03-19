@@ -35,6 +35,7 @@ void init()
     {
         struct NextMem* tempAddr;
         temp->memoryFile = openTrace(temp->memoryFilename);
+        temp->numOfIns = readNumIns(temp->memoryFile);
         tempAddr = readNextMem(temp->memoryFile);
         while(tempAddr!= NULL)
         {
@@ -284,6 +285,7 @@ void simulate()
         while((temp!= NULL) && ( temp->start_time <= current_time))
         {
             temp->memoryFile = openTrace(temp->memoryFilename);
+            temp->numOfIns = readNumIns(temp->memoryFile);
 
             struct NextMem* tempAddr = readNextMem(temp->memoryFile);
 
@@ -359,6 +361,7 @@ void simulate()
                 }
                 struct NextMem* tempAddr;
                 tempProcess->memoryFile = openTrace(tempProcess->memoryFilename);
+                temp->numOfIns = readNumIns(temp->memoryFile);
                 tempAddr = readNextMem(temp->memoryFile);
                 while(tempAddr!= NULL)
                 {
@@ -414,6 +417,7 @@ void simulate()
                         printf("\nGoing to move from proess list to ready\n");
                     }
                     tempProcess->memoryFile = openTrace(tempProcess->memoryFilename);
+                    temp->numOfIns = readNumIns(temp->memoryFile);
                     tempAddr = readNextMem(temp->memoryFile);
                     while(tempAddr!= NULL)
                     {

@@ -1,3 +1,4 @@
+Total-num-instr 3
 NONMEM
 NONMEM
 NONMEM

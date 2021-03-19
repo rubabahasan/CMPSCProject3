@@ -19,5 +19,9 @@ struct NextMem* readNextMem(FILE* fptr);
 /* Reads the system parameters from the file. Returns a struct containing the values.*/
 struct SystemParameters* readSysParam(FILE* fptr);
 
+/* Write the output in the file filename. Returns 1 on succes, 0 on failure.*/
 int writeToFile(char* filename, struct TotalStats resultStats);
+
+/* Reads the number of instructions in a mem file and returns an int containing the value.*/
+int readNumIns(FILE* fptr);
 
