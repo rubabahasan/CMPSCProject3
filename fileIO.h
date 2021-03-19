@@ -16,4 +16,8 @@ struct PCB* readNextTrace(FILE* fptr);
 /* Reads the next line in the memory file. Returns the address/type of the next MEM/NONMEM access.*/
 struct NextMem* readNextMem(FILE* fptr); 
 
+/* Reads the system parameters from the file. Returns a struct containing the values.*/
+struct SystemParameters* readSysParam(FILE* fptr);
+
+int writeToFile(char* filename, struct TotalStats resultStats);
 

@@ -12,6 +12,8 @@ void init()
     processList = gll_init();
     traceptr = openTrace(traceFileName);
 
+    sysParam = readSysParam(traceptr);
+
     //read traces from trace file and put them in the processList
     struct PCB* temp = readNextTrace(traceptr);
     if(temp == NULL)
@@ -70,6 +72,7 @@ void statsinit()
     // statsList = gll_init();
     resultStats.perProcessStats = gll_init();
     resultStats.executionOrder = gll_init();
+    resultStats.start_time = current_time;
     
 }
 
@@ -78,6 +81,7 @@ void statsUpdate()
     resultStats.OSModetime = OSTime;
     resultStats.userModeTime  = userTime;   
     resultStats.numberOfContextSwitch = numberContextSwitch;
+    resultStats.end_time = current_time;
 }
 
 //returns 1 on success, 0 if trace ends, -1 if page fault
@@ -97,12 +101,11 @@ int readPage(struct PCB* p, uint64_t stopTime)
 
     if(strcmp(addr->type, "NONMEM") == 0)
     {
-        uint64_t timeNeeded = (p->fracLeft > 0)? p->fracLeft: nonMemReadTime;
+        uint64_t timeNeeded = (p->fracLeft > 0)? p->fracLeft: sysParam->non_mem_inst_length;
     
         if(timeAvailable < timeNeeded)
         {
             current_time += timeAvailable;
-            busyTime += timeAvailable;
             userTime += timeAvailable;
             p->user_time += timeAvailable;
             p->fracLeft = timeNeeded - timeAvailable;
@@ -110,7 +113,6 @@ int readPage(struct PCB* p, uint64_t stopTime)
         else{
             gll_pop(p->memReq);
             current_time += timeNeeded; 
-            busyTime += timeNeeded;
             userTime += timeNeeded;
             p->user_time += timeNeeded;
             p->fracLeft = 0;
@@ -372,7 +374,6 @@ void simulate()
                     current_time = nextQuanta;
                     nextQuanta = current_time + quantum;
                 }
-                idleTime += (tempProcess->start_time-current_time);
                 OSTime += (tempProcess->start_time-current_time);
                 current_time = tempProcess->start_time; 
             }
@@ -384,7 +385,6 @@ void simulate()
                     {
                         printf("\nGoing to move from blocked list to ready\n");
                     }
-                    idleTime += (timeOfNextPendingDiskInterrupt-current_time);
                     OSTime += (timeOfNextPendingDiskInterrupt-current_time);
                     current_time = timeOfNextPendingDiskInterrupt;
                     while (nextQuanta < current_time)
@@ -399,7 +399,6 @@ void simulate()
                     {
                         printf("\nGoing to move from blocked list to ready\n");
                     }
-                    idleTime += (timeOfNextPendingDiskInterrupt-current_time);
                     OSTime += (timeOfNextPendingDiskInterrupt-current_time);
                     current_time = timeOfNextPendingDiskInterrupt;
                     while (nextQuanta < current_time)
@@ -429,7 +428,6 @@ void simulate()
                         current_time = nextQuanta;
                         nextQuanta = current_time + quantum;
                     }
-                    idleTime += (tempProcess->start_time-current_time);
                     OSTime += (tempProcess->start_time-current_time);
                     current_time = tempProcess->start_time; 
                 }
@@ -446,11 +444,16 @@ int main(int argc, char** argv)
         exit(1);
     }
     traceFileName = argv[1];
+    outputFileName = argv[2];
 
     simulate();
     finishAll();
     statsUpdate();
 
+    if(writeToFile(outputFileName, resultStats) == 0)
+    {
+        printf("Could not write output to file\n");
+    }
     printf("User time = %" PRIu64 "\nOS time = %" PRIu64 "\n", resultStats.userModeTime, resultStats.OSModetime);
     printf("Context switched = %d\n", resultStats.numberOfContextSwitch);
     printf("Start time = 0\nEnd time =%llu", current_time);

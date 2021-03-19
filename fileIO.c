@@ -20,6 +20,7 @@ FILE* openTrace(char* traceName){
         exit(1);
     }
     // printf("File opened\n");
+
     return fptr;
 }
 
@@ -31,6 +32,40 @@ int closeTrace(FILE* fptr){
         return 1;
     }
     return 0;
+}
+
+void fprintStats(gll_t* list, FILE* f)
+{
+    struct Stats* s;
+    gll_node_t* currNode = list->first;
+    while(currNode!=NULL){
+        s = currNode->data;
+        double hitRatio = s->hitCount / (1.0* s->hitCount + 1.0 * s->missCount);
+        fprintf(f, "\n\nProcess: %s: \nHit Ratio = %lf \tProcess completion time = %" PRIu64 
+                "\tuser time = %" PRIu64 "\tOS time = %" PRIu64 
+                "\nBlocked state duration = %" PRIu64 "\tNumber of page faults %d\t Number of TLB miss %d\n", 
+                s->processName, hitRatio, s->duration, s->user_time, s->OS_time, s->blockedStateDuration, s->numberOfPgFaults, s->numberOfTLBmiss) ;
+        currNode = currNode->next;
+    }
+}
+
+int writeToFile(char* filename, struct TotalStats resultStats){
+    FILE* fptr;
+    if ((fptr = fopen(filename,"w")) == NULL){
+        printf("Error opening file %s.\n", filename);
+        // Program exits if the file pointer returns NULL.
+        return 0;
+    }
+    fprintf(fptr, "Context switched = %d\n", resultStats.numberOfContextSwitch);
+
+    fprintf(fptr, "Start time = %llu\nEnd time =%llu\n", resultStats.start_time, resultStats.end_time);
+    fprintf(fptr, "User time = %" PRIu64 "\nOS time = %" PRIu64 "\n", resultStats.userModeTime, resultStats.OSModetime);
+    fprintf(fptr, "Number of disk interrupt = %d \tNumber of page faults %d \tNumber of TLB miss %d \nBlocked state duration = %" PRIu64 "\n", resultStats.numberOfDiskInt, resultStats.totalPgFaults, resultStats.totalTLBmiss, resultStats.totalBlockedStateDuration);
+    
+    fprintStats(resultStats.perProcessStats, fptr);
+    
+    fclose(fptr);
+    return 1;
 }
 
 struct PCB* readNextTrace(FILE *fptr){
@@ -116,4 +151,279 @@ struct NextMem* readNextMem(FILE* fptr)
 	return lineRead;
     }
     return NULL;
+}
+
+
+struct SystemParameters* readSysParam(FILE* fptr)
+{
+
+    if(fptr == NULL)
+    {
+        printf("No file found to read input.\n");
+        exit(1);
+    }
+
+    struct SystemParameters* sysParam = malloc(sizeof(systemParameters));
+    char* line = NULL;
+    ssize_t read;
+    size_t len = 0;
+    char *token;
+    
+    //reading comment lines
+    read = getline(&line, &len, fptr);
+    read = getline(&line, &len, fptr);
+
+    //start reading
+    read = getline(&line, &len, fptr);
+    if(read != -1)
+    {
+        token = strtok(line, " ");
+        token = strtok(NULL, " ");
+        // printf("NON mem INST length string , %s::\n", token);
+        sysParam->non_mem_inst_length = atoi(token);
+        // printf("NON mem INST length, %d::\n", sysParam->non_mem_inst_length);
+    }
+    else{
+        printf("Error reading system parameter from input file\n");
+        exit(1);
+    }
+
+    read = getline(&line, &len, fptr);
+    if(read != -1)
+    {
+        token = strtok(line, " ");
+        token = strtok(NULL, " ");
+        // printf("Virtual-addr-size-in-bits string , %s::\n", token);
+        sysParam->virtual_addr_size_in_bits = atoi(token);
+        // printf("Virtual-addr-size-in-bits, %d::\n", sysParam->virtual_addr_size_in_bits);
+    }
+    else{
+        printf("Error reading system parameter from input file\n");
+        exit(1);
+    }
+
+    read = getline(&line, &len, fptr);
+    if(read != -1)
+    {
+        token = strtok(line, " ");
+        token = strtok(NULL, " ");
+        // printf("DRAM_size_in_GB string , %s::\n", token);
+        sysParam->DRAM_size_in_GB = atoi(token);
+        // printf("DRAM_size_in_GB, %d::\n", sysParam->DRAM_size_in_GB);
+    }
+    else{
+        printf("Error reading system parameter from input file\n");
+        exit(1);
+    }
+
+    read = getline(&line, &len, fptr);
+    if(read != -1)
+    {
+        token = strtok(line, " ");
+        token = strtok(NULL, " ");
+        // printf("TLB-latency string , %s::\n", token);
+        sysParam->TLB_latency = atoi(token);
+        // printf("TLB-latency, %d::\n", sysParam->TLB_latency);
+    }
+    else{
+        printf("Error reading system parameter from input file\n");
+        exit(1);
+    }
+
+    read = getline(&line, &len, fptr);
+    if(read != -1)
+    {
+        token = strtok(line, " ");
+        token = strtok(NULL, " ");
+        // printf("DRAM-latency string , %s::\n", token);
+        sysParam->DRAM_latency = atoi(token);
+        // printf("DRAM-latency, %d::\n", sysParam->DRAM_latency);
+    }
+    else{
+        printf("Error reading system parameter from input file\n");
+        exit(1);
+    }
+
+
+    read = getline(&line, &len, fptr);
+    if(read != -1)
+    {
+        token = strtok(line, " ");
+        token = strtok(NULL, " ");
+        // printf("Swap-latency string , %s::\n", token);
+        sysParam->Swap_latency = atoi(token);
+        // printf("Swap-latency, %d::\n", sysParam->Swap_latency);
+    }
+    else{
+        printf("Error reading system parameter from input file\n");
+        exit(1);
+    }
+
+    read = getline(&line, &len, fptr);
+    if(read != -1)
+    {
+        token = strtok(line, " ");
+        token = strtok(NULL, " ");
+        // printf("P-in-bits string , %s::\n", token);
+        sysParam->P_in_bits = atoi(token);
+        // printf("P-in-bits, %d::\n", sysParam->P_in_bits);
+    }
+    else{
+        printf("Error reading system parameter from input file\n");
+        exit(1);
+    }
+
+    read = getline(&line, &len, fptr);
+    if(read != -1)
+    {
+        token = strtok(line, " ");
+        token = strtok(NULL, " ");
+        // printf("Page-fault-trap-handling-time string , %s::\n", token);
+        sysParam->Page_fault_trap_handling_time = atoi(token);
+        // printf("Page-fault-trap-handling-time, %d::\n", sysParam->Page_fault_trap_handling_time);
+    }
+    else{
+        printf("Error reading system parameter from input file\n");
+        exit(1);
+    }
+
+    read = getline(&line, &len, fptr);
+    if(read != -1)
+    {
+        token = strtok(line, " ");
+        token = strtok(NULL, " ");
+        // printf("Swap-interrupt-handling-time string , %s::\n", token);
+        sysParam->Swap_interrupt_handling_time = atoi(token);
+        // printf("Swap-interrupt-handling-time, %d::\n", sysParam->Swap_interrupt_handling_time);
+    }
+    else{
+        printf("Error reading system parameter from input file\n");
+        exit(1);
+    }
+    
+    read = getline(&line, &len, fptr);
+    if(read != -1)
+    {
+        token = strtok(line, " ");
+        token = strtok(NULL, " ");
+        // printf("TLB-replacement-policy string , %s::\n", token);
+        token[strcspn(token, "\n")] = '\0'; //removes trailing newline characters, if any
+        sysParam->TLB_replacement_policy = token;
+        // printf("TLB-replacement-policy, %s::\n", sysParam->TLB_replacement_policy);
+    }
+    else{
+        printf("Error reading system parameter from input file\n");
+        exit(1);
+    }
+
+    //reading comment line
+    read = getline(&line, &len, fptr);
+
+    read = getline(&line, &len, fptr);
+    if(read != -1)
+    {
+        token = strtok(line, " ");
+        token = strtok(NULL, " ");
+        // printf("Frac-mem-inst string , %s::\n", token);
+        sysParam->Frac_mem_inst = atof(token);
+        // printf("Frac-mem-inst, %lf::\n", sysParam->Frac_mem_inst);
+    }
+    else{
+        printf("Error reading system parameter from input file\n");
+        exit(1);
+    }
+    
+    read = getline(&line, &len, fptr);
+    if(read != -1)
+    {
+        token = strtok(line, " ");
+        token = strtok(NULL, " ");
+        // printf("Num-pagetable-levels string , %s::\n", token);
+        sysParam->Num_pagetable_levels = atoi(token);
+        // printf("Num-pagetable-levels, %d::\n", sysParam->Num_pagetable_levels);
+    }
+    else{
+        printf("Error reading system parameter from input file\n");
+        exit(1);
+    }
+
+    read = getline(&line, &len, fptr);
+    if(read != -1)
+    {
+        token = strtok(line, " ");
+        token = strtok(NULL, " ");
+        // printf("N1-in-bits string , %s::\n", token);
+        sysParam->N1_in_bits = atoi(token);
+        // printf("N1-in-bits, %d::\n", sysParam->N1_in_bits);
+    }
+    else{
+        printf("Error reading system parameter from input file\n");
+        exit(1);
+    }
+
+
+    read = getline(&line, &len, fptr);
+    if(read != -1)
+    {
+        token = strtok(line, " ");
+        token = strtok(NULL, " ");
+        // printf("N2-in-bits string , %s::\n", token);
+        sysParam->N2_in_bits = atoi(token);
+        // printf("N2-in-bits, %d::\n", sysParam->N2_in_bits);
+    }
+    else{
+        printf("Error reading system parameter from input file\n");
+        exit(1);
+    }
+
+    read = getline(&line, &len, fptr);
+    if(read != -1)
+    {
+        token = strtok(line, " ");
+        token = strtok(NULL, " ");
+        // printf("N3-in-bits string , %s::\n", token);
+        sysParam->N3_in_bits = atoi(token);
+        // printf("N3-in-bits, %d::\n", sysParam->N3_in_bits);
+    }
+    else{
+        printf("Error reading system parameter from input file\n");
+        exit(1);
+    }
+
+
+    read = getline(&line, &len, fptr);
+    if(read != -1)
+    {
+        token = strtok(line, " ");
+        token = strtok(NULL, " ");
+        // printf("Page-replacement-policy string , %s::\n", token);
+        token[strcspn(token, "\n")] = '\0'; //removes trailing newline characters, if any
+        sysParam->Page_replacement_policy = token;
+        // printf("Page-replacement-policy, %s::\n", sysParam->Page_replacement_policy);
+    }
+    else{
+        printf("Error reading system parameter from input file\n");
+        exit(1);
+    }
+
+
+    read = getline(&line, &len, fptr);
+    if(read != -1)
+    {
+        token = strtok(line, " ");
+        token = strtok(NULL, " ");
+        // printf("Num-procs  string , %s::\n", token);
+        sysParam->Num_procs = atoi(token);
+        // printf("Num-procs , %d::\n", sysParam->Num_procs);
+    }
+    else{
+        printf("Error reading system parameter from input file\n");
+        exit(1);
+    }
+
+    //reading comment line
+    read = getline(&line, &len, fptr);
+
+    return sysParam;
+
 }

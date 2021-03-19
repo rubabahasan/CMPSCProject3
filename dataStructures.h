@@ -47,6 +47,8 @@ typedef struct Stats{
 } stats;
 
 typedef struct TotalStats{
+    uint64_t start_time;
+    uint64_t end_time;
     gll_t* perProcessStats;
     int numberOfContextSwitch;
     int numberOfDiskInt;
@@ -58,5 +60,32 @@ typedef struct TotalStats{
     gll_t* executionOrder;
 
 } totalstats;
+
+typedef struct SystemParameters{
+    uint64_t non_mem_inst_length;
+    int virtual_addr_size_in_bits;
+    uint64_t contextSwitchTime;
+
+    uint64_t TLB_latency;
+    uint64_t DRAM_latency;
+    uint64_t Swap_latency;
+    uint64_t Page_fault_trap_handling_time;
+    uint64_t Swap_interrupt_handling_time; 
+
+    uint64_t quantum;
+
+    int DRAM_size_in_GB; 
+    int P_in_bits;
+
+    char* TLB_replacement_policy;
+
+    double Frac_mem_inst;
+    int Num_pagetable_levels;
+    int N1_in_bits;
+    int N2_in_bits;
+    int N3_in_bits;
+    char* Page_replacement_policy;
+    int Num_procs;
+} systemParameters;
 
 #endif

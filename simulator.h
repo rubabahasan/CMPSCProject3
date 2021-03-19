@@ -11,29 +11,32 @@ int debug = 0;
 char* traceFileName;
 FILE* traceptr;
 
+char* outputFileName;
+
+struct SystemParameters* sysParam;
+
 gll_t *processList, *readyProcess, *runningProcess, *blockedProcess;
 
 struct TotalStats resultStats;
 
 uint64_t current_time, nextDiskReadTime, nextQuanta, nextDiskInt;
-uint64_t idleTime = 0;
-uint64_t busyTime = 0;
+
 uint64_t OSTime = 0;
 uint64_t userTime = 0;
 
 int numberContextSwitch = 0;
 
-uint64_t nonMemReadTime = 1;
+// uint64_t nonMemReadTime = 1;
 uint64_t contextSwitchTime = 1000;
 
-uint64_t TLBaccessLatency = 1;
-uint64_t DRAMaccessLatency = 100;
-uint64_t diskAccessLatency = 1000000;
+// uint64_t TLBaccessLatency = 1;
+// uint64_t DRAMaccessLatency = 100;
+// uint64_t diskAccessLatency = 1000000;
 
 uint64_t quantum = 10000;
-int pgSize = 50;
-int DRAMSize = 1000; 
-int levelsPgTable = 1;
+// int pgSize = 50;
+// int DRAMSize = 1000; 
+// int levelsPgTable = 1;
 
 /*Helper print functions*/
 void printPCB(struct PCB* p);
