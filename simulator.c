@@ -222,15 +222,17 @@ void cleanUpProcess(struct PCB* p)
 
 }
 
-void printPCB(struct PCB* p)
+void printPCB(void* v)
 {
+    struct PCB* p = v;
     if(p!=NULL){
         printf("%s, %" PRIu64 "\n", p->name, p->start_time);
     }
 }
 
-void printStats(struct Stats* s)
+void printStats(void* v)
 {
+    struct Stats* s = v;
     if(s!=NULL){
         double hitRatio = s->hitCount / (1.0* s->hitCount + 1.0 * s->missCount);
         printf("\n\nProcess: %s: \nHit Ratio = %lf \tProcess completion time = %" PRIu64 
@@ -238,12 +240,14 @@ void printStats(struct Stats* s)
     }
 }
 
-void printExecOrder(char* c)
+void printExecOrder(void* v)
 {
+    char* c = v;
     if(c!=NULL){
         printf("%s\n", c) ;
     }
 }
+
 
 
 
@@ -411,7 +415,7 @@ void simulate()
                     diskToMemory();
                 }
                 else{
-                    char* tempAddr;
+                    struct NextMem* tempAddr;
                     if(debug == 1)
                     {
                         printf("\nGoing to move from proess list to ready\n");

@@ -31,10 +31,10 @@ uint64_t contextSwitchTime = 1000;
 uint64_t quantum = 10000;
 
 /*Helper print functions*/
-void printPCB(struct PCB* p);
-void printStats(struct Stats* p);
+void printPCB(void* p);
+void printStats(void* p);
 /* Prints the order of execution of the processes */
-void printExecOrder(char* c);
+void printExecOrder(void* c);
 
 void init();
 void finishAll();
