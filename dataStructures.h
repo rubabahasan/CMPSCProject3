@@ -75,10 +75,12 @@ typedef struct SystemParameters{
 
     uint64_t quantum;
 
-    int DRAM_size_in_GB; 
+    int DRAM_size_in_MB;
+    int TLB_size_in_entries; 
     int P_in_bits;
 
     char* TLB_replacement_policy;
+    char* TLB_type;
 
     double Frac_mem_inst;
     int Num_pagetable_levels;

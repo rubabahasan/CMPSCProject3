@@ -232,9 +232,23 @@ struct SystemParameters* readSysParam(FILE* fptr)
     {
         token = strtok(line, " ");
         token = strtok(NULL, " ");
-        // printf("DRAM_size_in_GB string , %s::\n", token);
-        sysParam->DRAM_size_in_GB = atoi(token);
-        // printf("DRAM_size_in_GB, %d::\n", sysParam->DRAM_size_in_GB);
+        // printf("DRAM_size_in_MB string , %s::\n", token);
+        sysParam->DRAM_size_in_MB = atoi(token);
+        // printf("DRAM_size_in_MB, %d::\n", sysParam->DRAM_size_in_MB);
+    }
+    else{
+        printf("Error reading system parameter from input file\n");
+        exit(1);
+    }
+
+    read = getline(&line, &len, fptr);
+    if(read != -1)
+    {
+        token = strtok(line, " ");
+        token = strtok(NULL, " ");
+        // printf("TLB_size_in_entries string , %s::\n", token);
+        sysParam->TLB_size_in_entries = atoi(token);
+        // printf("TLB_size_in_entries, %d::\n", sysParam->TLB_size_in_entries);
     }
     else{
         printf("Error reading system parameter from input file\n");
@@ -289,20 +303,6 @@ struct SystemParameters* readSysParam(FILE* fptr)
     {
         token = strtok(line, " ");
         token = strtok(NULL, " ");
-        // printf("P-in-bits string , %s::\n", token);
-        sysParam->P_in_bits = atoi(token);
-        // printf("P-in-bits, %d::\n", sysParam->P_in_bits);
-    }
-    else{
-        printf("Error reading system parameter from input file\n");
-        exit(1);
-    }
-
-    read = getline(&line, &len, fptr);
-    if(read != -1)
-    {
-        token = strtok(line, " ");
-        token = strtok(NULL, " ");
         // printf("Page-fault-trap-handling-time string , %s::\n", token);
         sysParam->Page_fault_trap_handling_time = atoi(token);
         // printf("Page-fault-trap-handling-time, %d::\n", sysParam->Page_fault_trap_handling_time);
@@ -331,6 +331,21 @@ struct SystemParameters* readSysParam(FILE* fptr)
     {
         token = strtok(line, " ");
         token = strtok(NULL, " ");
+        // printf("TLB_type string , %s::\n", token);
+        token[strcspn(token, "\n")] = '\0'; //removes trailing newline characters, if any
+        sysParam->TLB_type = token;
+        // printf("TLB-type, %s::\n", sysParam->TLB_type);
+    }
+    else{
+        printf("Error reading system parameter from input file\n");
+        exit(1);
+    }
+
+    read = getline(&line, &len, fptr);
+    if(read != -1)
+    {
+        token = strtok(line, " ");
+        token = strtok(NULL, " ");
         // printf("TLB-replacement-policy string , %s::\n", token);
         token[strcspn(token, "\n")] = '\0'; //removes trailing newline characters, if any
         sysParam->TLB_replacement_policy = token;
@@ -343,6 +358,21 @@ struct SystemParameters* readSysParam(FILE* fptr)
 
     //reading comment line
     read = getline(&line, &len, fptr);
+
+    read = getline(&line, &len, fptr);
+    if(read != -1)
+    {
+        token = strtok(line, " ");
+        token = strtok(NULL, " ");
+        // printf("P-in-bits string , %s::\n", token);
+        sysParam->P_in_bits = atoi(token);
+        // printf("P-in-bits, %d::\n", sysParam->P_in_bits);
+    }
+    else{
+        printf("Error reading system parameter from input file\n");
+        exit(1);
+    }
+
 
     read = getline(&line, &len, fptr);
     if(read != -1)
